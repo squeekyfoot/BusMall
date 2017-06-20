@@ -5,8 +5,7 @@
 var allProducts = [];
 var productNames = [];
 var questionNumber = 1;
-
-
+var alreadyUsed = [];
 
 // Declare global functions:
 
@@ -49,34 +48,60 @@ var wine_glass = new Product('wine_glass', 'Best Wine Glass');
 
 console.log(allProducts);
 
-// function selectThree () {
-//   var select1 = 0;
-//   var select2 = 1;
-//   var select3 = 2;
-//
-// }
-
-// function randomize () {
-//   Math.floor(Math.random() * productNames.length);
-// }
-
-var answerA = document.getElementById()
-
 function renderProduct () {
   for (var i = 0; i < 3; i++) {
     var random = Math.floor(Math.random() * productNames.length);
+    while (alreadyUsed.indexOf(productNames[random]) > -1) {
+      random = Math.floor(Math.random() * productNames.length);
+      console.log('already used');
+    };
+    var counter = document.getElementById('counter');
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
     var parentElement = document.getElementById('surveyProducts');
     var figure = document.createElement('figure');
+    // figure.setAttribute('id', allProducts[random].name);
+    // figure.setAttribute('class', allProducts[random].name);
+    figure.setAttribute('id', 'figure' + i);
     var img = document.createElement('img');
-    img.setAttribute('id', 'figure' + i);
+    img.setAttribute('id', 'img' + i);
     img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
     var figcaption = document.createElement('figcaption');
+    figcaption.setAttribute('id', 'caption' + i);
     figcaption.textContent = allProducts[random].friendlyName;
 
     parentElement.appendChild(figure);
     figure.appendChild(img);
     figure.appendChild(figcaption);
+    alreadyUsed.push(productNames[random]);
+    console.log(alreadyUsed);
   }
 }
 
 renderProduct();
+
+console.log(bag.timesChosen);
+
+var optionA = document.getElementById('figure0');
+optionA.addEventListener('click', function(){
+  for (var i = 0; i < 3; i++) {
+    // var score = document.getElementsByClassName('figure0')
+    var random = Math.floor(Math.random() * productNames.length);
+    while (alreadyUsed.indexOf(productNames[random]) > -1) {
+      random = Math.floor(Math.random() * productNames.length);
+      console.log('already used');
+    };
+    // var figure = document.getElementById('figure0');
+    var img = document.getElementById('img' + i);
+    img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
+    var figcaption = document.getElementById('caption' + i);
+    figcaption.textContent = allProducts[random].friendlyName;
+    alreadyUsed.push(productNames[random]);
+    console.log(alreadyUsed);
+  }
+  alreadyUsed.splice(0, 3);
+  console.log(alreadyUsed);
+  var counter = document.getElementById('counter');
+  questionNumber += 1;
+  counter.textContent = 'Question ' + questionNumber + ' of 25';
+  console.log(questionNumber);
+});
