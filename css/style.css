@@ -1,0 +1,63 @@
+body {
+  display: block;
+  width: 70%;
+  margin: auto;
+}
+
+h1, h2, h3 {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+#welcome {
+  display: block;
+  width: 60%;
+  margin: auto;
+}
+
+a {
+  display: block;
+  width: 60%;
+  margin: auto;
+}
+
+button {
+  display: block;
+  margin: 50px auto;
+}
+
+main {
+  display: block;
+  width: 100%;
+  margin: auto;
+}
+
+figure {
+  box-sizing: border-box;
+  display: block;
+  float: left;
+  width: 33.3%;
+  margin: auto;
+
+}
+
+img {
+  width: 100%;
+  margin: auto;
+}
+
+figcaption {
+  text-align: center;
+}
+
+main#surveyResults {
+  display: block;
+  width: 30%;
+  margin: auto;
+}
+
+main#surveyResults > div {
+  display: block;
+  width: 100%;
+}
