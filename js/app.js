@@ -4,6 +4,7 @@
 
 var allProducts = [];
 var productNames = [];
+var questionNumber = 1;
 
 
 
@@ -12,7 +13,7 @@ var productNames = [];
 function Product (name, friendlyName) {
   this.name = name;
   this.friendlyName = friendlyName;
-  this.source = this.name + '.jpg';
+  this.source = 'img/' + this.name + '.jpg';
   this.timesChosen = 0;
   this.percentClicked = 0;
   this.timesChosenMessage = 'Chosen: ' + this.timesChosen + ' times';
@@ -39,7 +40,7 @@ var pen = new Product('pen', 'Utencil Caps');
 var pet_sweep = new Product('pet_sweep', 'Pet Sweeping Boots');
 var scissors = new Product('scissors', 'Pizza Scissors');
 var shark = new Product('shark', 'Shark Sleeping Bag');
-var sweep = new Product('sweep', 'Baby Sleeping Outfit');
+var sweep = new Product('sweep', 'Baby Sweeping Outfit');
 var tauntaun = new Product('tauntaun', 'Dead Tauntaun Sleeping Bag');
 var unicorn = new Product('unicorn', 'Can of Unicorn Meat');
 var usb = new Product('usb', 'USB Tentacle Arm');
@@ -47,3 +48,35 @@ var water_can = new Product('water_can', 'Functional Water Can');
 var wine_glass = new Product('wine_glass', 'Best Wine Glass');
 
 console.log(allProducts);
+
+// function selectThree () {
+//   var select1 = 0;
+//   var select2 = 1;
+//   var select3 = 2;
+//
+// }
+
+// function randomize () {
+//   Math.floor(Math.random() * productNames.length);
+// }
+
+var answerA = document.getElementById()
+
+function renderProduct () {
+  for (var i = 0; i < 3; i++) {
+    var random = Math.floor(Math.random() * productNames.length);
+    var parentElement = document.getElementById('surveyProducts');
+    var figure = document.createElement('figure');
+    var img = document.createElement('img');
+    img.setAttribute('id', 'figure' + i);
+    img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
+    var figcaption = document.createElement('figcaption');
+    figcaption.textContent = allProducts[random].friendlyName;
+
+    parentElement.appendChild(figure);
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+  }
+}
+
+renderProduct();
