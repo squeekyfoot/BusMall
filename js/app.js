@@ -1,55 +1,8 @@
-
-
-function storeClicks (product, clickCount) {
-  var clicks = clickCount.toString();
-  var product = product.toString();
-  localStorage.setItem(product, clicks);
-}
-
-function getClicks (product) {
-  var clicks = localStorage.getItem(product);
-  if (clicks !== null) {
-    clicks = parseInt(clicks);
-  }
-  return clicks;
-}
-
-function deleteClicks (product) {
-  localStorage.removeItem(product);
-  return null;
-}
-
-function incrementQuestionNumber () {
-  var count = getQuestionNumber();
-  count++;
-  storeQuestionNumber(count);
-}
-
-function storeQuestionNumber (number) {
-  var count = number.toString();
-  localStorage.setItem('questionNumber', count);
-}
-
-function getQuestionNumber () {
-  var count = localStorage.getItem('questionNumber');
-  if (count !== null) {
-    count = parseInt(count);
-  } else {
-    count = 1;
-  }
-  return count;
-}
-
-function deleteQuestionNumber () {
-  localStorage.removeItem('questionNumber');
-  return null;
-}
-
 'use strict';
 
 // Declare global variables:
 
-var allProducts = [];
+var allProducts = loadClicks();
 var productNames = [];
 var questionNumber = getQuestionNumber();
 var alreadyUsed = [];
@@ -85,26 +38,28 @@ function Product (name, friendlyName) {
 
 // Create all of the products using the constructor
 
-var bag = new Product('bag', 'R2D2 Bag');
-var banana = new Product('banana', 'Banana Slicer');
-var bathroom = new Product('bathroom', 'Bathroom Tablet Holder');
-var boots = new Product('boots', 'Boot Shoe Covers');
-var breakfast = new Product('breakfast', 'Complete Breakfast Maker');
-var bubblegum = new Product('bubblegum', 'Meatball Bubble Gum');
-var chair = new Product('chair', 'Super-Uncomfortable Chair');
-var cthulhu = new Product('cthulhu', 'Cthulhu Action Figure');
-var dog_duck = new Product('dog_duck', 'The Old Duck-Dog');
-var dragon = new Product('dragon', 'Can of Dragon Meat');
-var pen = new Product('pen', 'Utencil Caps');
-var pet_sweep = new Product('pet_sweep', 'Pet Sweeping Boots');
-var scissors = new Product('scissors', 'Pizza Scissors');
-var shark = new Product('shark', 'Shark Sleeping Bag');
-var sweep = new Product('sweep', 'Baby Sweeping Outfit');
-var tauntaun = new Product('tauntaun', 'Dead Tauntaun Sleeping Bag');
-var unicorn = new Product('unicorn', 'Can of Unicorn Meat');
-var usb = new Product('usb', 'USB Tentacle Arm');
-var water_can = new Product('water_can', 'Functional Water Can');
-var wine_glass = new Product('wine_glass', 'Best Wine Glass');
+function createAllProducts () {
+  var bag = new Product('bag', 'R2D2 Bag');
+  var banana = new Product('banana', 'Banana Slicer');
+  var bathroom = new Product('bathroom', 'Bathroom Tablet Holder');
+  var boots = new Product('boots', 'Boot Shoe Covers');
+  var breakfast = new Product('breakfast', 'Complete Breakfast Maker');
+  var bubblegum = new Product('bubblegum', 'Meatball Bubble Gum');
+  var chair = new Product('chair', 'Super-Uncomfortable Chair');
+  var cthulhu = new Product('cthulhu', 'Cthulhu Action Figure');
+  var dog_duck = new Product('dog_duck', 'The Old Duck-Dog');
+  var dragon = new Product('dragon', 'Can of Dragon Meat');
+  var pen = new Product('pen', 'Utencil Caps');
+  var pet_sweep = new Product('pet_sweep', 'Pet Sweeping Boots');
+  var scissors = new Product('scissors', 'Pizza Scissors');
+  var shark = new Product('shark', 'Shark Sleeping Bag');
+  var sweep = new Product('sweep', 'Baby Sweeping Outfit');
+  var tauntaun = new Product('tauntaun', 'Dead Tauntaun Sleeping Bag');
+  var unicorn = new Product('unicorn', 'Can of Unicorn Meat');
+  var usb = new Product('usb', 'USB Tentacle Arm');
+  var water_can = new Product('water_can', 'Functional Water Can');
+  var wine_glass = new Product('wine_glass', 'Best Wine Glass');
+}
 
 
 // Render the first three product choices
@@ -158,7 +113,8 @@ if (questionNumber > 25) {
 function startEventListeners () {
   var leftProduct = document.getElementById('figure0');
   leftProduct.addEventListener('click', function(){
-    addClick(leftChoice);
+    // addClick(leftChoice);
+    incrementClicks(leftChoice);
     resetChoices();
 
     leftChoice = allProducts[randomProduct];
@@ -177,7 +133,8 @@ function startEventListeners () {
 
   var middleProduct = document.getElementById('figure1');
   middleProduct.addEventListener('click', function(){
-    addClick(middleChoice);
+    // addClick(middleChoice);
+    incrementClicks(middleChoice);
     resetChoices();
 
     middleChoice = allProducts[randomProduct];
@@ -196,7 +153,8 @@ function startEventListeners () {
 
   var rightProduct = document.getElementById('figure2');
   rightProduct.addEventListener('click', function(){
-    addClick(rightChoice);
+    // addClick(rightChoice);
+    incrementClicks(rightChoice);
     resetChoices();
 
     rightChoice = allProducts[randomProduct];
@@ -308,4 +266,74 @@ function resetChoices () {
 function addClick (product) {
   // var clicks = getClicks(product);
   product.timesChosen += 1;
+}
+
+
+function storeClicks () {
+  // var clicks = clickCount.toString();
+  // var product = product.toString();
+  // localStorage.setItem(product, clicks);
+
+  var stringedProducts = JSON.stringify(allProducts);
+  localStorage.setItem('allProducts', stringedProducts);
+}
+
+function incrementClicks (product) {
+  var clicks = getClicks(product);
+  clicks++;
+  storeClicks();
+}
+
+function loadClicks () {
+  // var clicks = localStorage.getItem(product);
+  // if (clicks !== null) {
+  //   clicks = parseInt(clicks);
+  // }
+  // return clicks;
+  var stringedProducts = localStorage.getItem('allProducts');
+  if (stringedProducts !== null) {
+    var unstringedProducts = JSON.parse(stringedProducts);
+    return unstringedProducts;
+  } else {
+    var createProducts = createAllProducts();
+    return createProducts;
+  }
+}
+
+function getClicks (productName) {
+  var stringedProducts = localStorage.getItem('allProducts');
+  allProducts = JSON.parse(stringedProducts);
+  var clicks = productName.timesChosen;
+  return clicks;
+}
+
+function deleteClicks (product) {
+  localStorage.removeItem(product);
+  return null;
+}
+
+function incrementQuestionNumber () {
+  var count = getQuestionNumber();
+  count++;
+  storeQuestionNumber(count);
+}
+
+function storeQuestionNumber (number) {
+  var count = number.toString();
+  localStorage.setItem('questionNumber', count);
+}
+
+function getQuestionNumber () {
+  var count = localStorage.getItem('questionNumber');
+  if (count !== null) {
+    count = parseInt(count);
+  } else {
+    count = 1;
+  }
+  return count;
+}
+
+function deleteQuestionNumber () {
+  localStorage.removeItem('questionNumber');
+  return null;
 }
