@@ -1,10 +1,57 @@
+
+
+function storeClicks (product, clickCount) {
+  var clicks = clickCount.toString();
+  var product = product.toString();
+  localStorage.setItem(product, clicks);
+}
+
+function getClicks (product) {
+  var clicks = localStorage.getItem(product);
+  if (clicks !== null) {
+    clicks = parseInt(clicks);
+  }
+  return clicks;
+}
+
+function deleteClicks (product) {
+  localStorage.removeItem(product);
+  return null;
+}
+
+function incrementQuestionNumber () {
+  var count = getQuestionNumber();
+  count++;
+  storeQuestionNumber(count);
+}
+
+function storeQuestionNumber (number) {
+  var count = number.toString();
+  localStorage.setItem('questionNumber', count);
+}
+
+function getQuestionNumber () {
+  var count = localStorage.getItem('questionNumber');
+  if (count !== null) {
+    count = parseInt(count);
+  } else {
+    count = 1;
+  }
+  return count;
+}
+
+function deleteQuestionNumber () {
+  localStorage.removeItem('questionNumber');
+  return null;
+}
+
 'use strict';
 
 // Declare global variables:
 
 var allProducts = [];
 var productNames = [];
-var questionNumber = 1;
+var questionNumber = getQuestionNumber();
 var alreadyUsed = [];
 var chartData = [];
 var chartColors = [];
@@ -97,63 +144,73 @@ function renderInitialChoices () {
   }
 }
 
-renderInitialChoices();
+
+if (questionNumber > 25) {
+  displayChart();
+} else {
+  renderInitialChoices();
+  startEventListeners();
+}
 
 // Set up the three different event listeners for each image/text group
 
 // Left Product:
+function startEventListeners () {
+  var leftProduct = document.getElementById('figure0');
+  leftProduct.addEventListener('click', function(){
+    addClick(leftChoice);
+    resetChoices();
 
-var leftProduct = document.getElementById('figure0');
-leftProduct.addEventListener('click', function(){
-  addPoint(leftChoice);
-  resetChoices();
+    leftChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  leftChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
 
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+  // Middle Product:
 
-// Middle Product:
+  var middleProduct = document.getElementById('figure1');
+  middleProduct.addEventListener('click', function(){
+    addClick(middleChoice);
+    resetChoices();
 
-var middleProduct = document.getElementById('figure1');
-middleProduct.addEventListener('click', function(){
-  addPoint(middleChoice);
-  resetChoices();
+    middleChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  middleChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
 
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+  // Right product:
 
-// Right product:
+  var rightProduct = document.getElementById('figure2');
+  rightProduct.addEventListener('click', function(){
+    addClick(rightChoice);
+    resetChoices();
 
-var rightProduct = document.getElementById('figure2');
-rightProduct.addEventListener('click', function(){
-  addPoint(rightChoice);
-  resetChoices();
+    rightChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  rightChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
-
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
+}
 
 
 ////////////////////////////////////////////////////////////////
@@ -203,6 +260,18 @@ function displayChart () {
       }
     }
   });
+  var restart = document.createElement('a');
+  restart.setAttribute('href', 'index.html');
+  child.appendChild(restart);
+  var button = document.createElement('button');
+  button.setAttribute('id', 'resetButton');
+  button.setAttribute('type', 'button');
+  // button.setAttribute('name', 'resetButton');
+  button.textContent = 'Restart Survey';
+  restart.appendChild(button);
+
+  var redoEverything = document.getElementById('resetButton');
+  redoEverything.addEventListener('click', deleteQuestionNumber);
 }
 
 function retrieveChartData () {
@@ -236,6 +305,7 @@ function resetChoices () {
   }
 }
 
-function addPoint (selection) {
-  selection.timesChosen += 1;
+function addClick (product) {
+  // var clicks = getClicks(product);
+  product.timesChosen += 1;
 }
