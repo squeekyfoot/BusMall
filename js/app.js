@@ -6,12 +6,14 @@ var allProducts = [];
 var productNames = [];
 var questionNumber = 1;
 var alreadyUsed = [];
-
+var chartData = [];
+var chartColors = [];
+var randomProduct;
 var leftChoice;
 var middleChoice;
 var rightChoice;
 
-// Declare global functions:
+// Object constructor for all products
 
 function Product (name, friendlyName) {
   this.name = name;
@@ -34,6 +36,7 @@ function Product (name, friendlyName) {
   };
 }
 
+// Create all of the products using the constructor
 
 var bag = new Product('bag', 'R2D2 Bag');
 var banana = new Product('banana', 'Banana Slicer');
@@ -56,14 +59,14 @@ var usb = new Product('usb', 'USB Tentacle Arm');
 var water_can = new Product('water_can', 'Functional Water Can');
 var wine_glass = new Product('wine_glass', 'Best Wine Glass');
 
-console.log(allProducts);
 
-function renderProduct () {
+// Render the first three product choices
+
+function renderInitialChoices () {
   for (var i = 0; i < 3; i++) {
     var random = Math.floor(Math.random() * productNames.length);
     while (alreadyUsed.indexOf(productNames[random]) > -1) {
       random = Math.floor(Math.random() * productNames.length);
-      console.log('already used');
     };
     var counter = document.getElementById('counter');
     counter.textContent = 'Question ' + questionNumber + ' of 25';
@@ -91,143 +94,148 @@ function renderProduct () {
     figure.appendChild(img);
     figure.appendChild(figcaption);
     alreadyUsed.push(productNames[random]);
-    console.log(alreadyUsed);
   }
 }
 
-renderProduct();
+renderInitialChoices();
 
-function addPoint (selection) {
-  selection.timesChosen += 1;
-}
+// Set up the three different event listeners for each image/text group
 
+// Left Product:
 
-
-var optionA = document.getElementById('figure0');
-optionA.addEventListener('click', function(){
+var leftProduct = document.getElementById('figure0');
+leftProduct.addEventListener('click', function(){
   addPoint(leftChoice);
-  console.log(leftChoice.name + ' points: ' + leftChoice.timesChosen);
-  for (var i = 0; i < 3; i++) {
-    // var score = document.getElementsByClassName('figure0')
-    var random = Math.floor(Math.random() * productNames.length);
-    while (alreadyUsed.indexOf(productNames[random]) > -1) {
-      random = Math.floor(Math.random() * productNames.length);
-      console.log('already used');
-    };
-    // var figure = document.getElementById('figure0');
-    var img = document.getElementById('img' + i);
-    img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
-    var figcaption = document.getElementById('caption' + i);
-    figcaption.textContent = allProducts[random].friendlyName;
-    alreadyUsed.push(productNames[random]);
-    console.log(alreadyUsed);
-  }
-  leftChoice = allProducts[random];
+  resetChoices();
+
+  leftChoice = allProducts[randomProduct];
   alreadyUsed.splice(0, 3);
-  console.log(alreadyUsed);
+
   var counter = document.getElementById('counter');
   questionNumber += 1;
   counter.textContent = 'Question ' + questionNumber + ' of 25';
   if (questionNumber > 25) {
-    displayResults();
+    displayChart();
   }
-  console.log(questionNumber);
 });
 
-var optionB = document.getElementById('figure1');
-optionB.addEventListener('click', function(){
+// Middle Product:
+
+var middleProduct = document.getElementById('figure1');
+middleProduct.addEventListener('click', function(){
   addPoint(middleChoice);
-  console.log(middleChoice.name + ' points: ' + middleChoice.timesChosen);
-  for (var i = 0; i < 3; i++) {
-    // var score = document.getElementsByClassName('figure0')
-    var random = Math.floor(Math.random() * productNames.length);
-    while (alreadyUsed.indexOf(productNames[random]) > -1) {
-      random = Math.floor(Math.random() * productNames.length);
-      console.log('already used');
-    };
-    // var figure = document.getElementById('figure0');
-    var img = document.getElementById('img' + i);
-    img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
-    var figcaption = document.getElementById('caption' + i);
-    figcaption.textContent = allProducts[random].friendlyName;
-    alreadyUsed.push(productNames[random]);
-    console.log(alreadyUsed);
-  }
-  middleChoice = allProducts[random];
+  resetChoices();
+
+  middleChoice = allProducts[randomProduct];
   alreadyUsed.splice(0, 3);
-  console.log(alreadyUsed);
+
   var counter = document.getElementById('counter');
   questionNumber += 1;
   counter.textContent = 'Question ' + questionNumber + ' of 25';
   if (questionNumber > 25) {
-    displayResults();
+    displayChart();
   }
-  console.log(questionNumber);
 });
 
-var optionC = document.getElementById('figure2');
-optionC.addEventListener('click', function(){
+// Right product:
+
+var rightProduct = document.getElementById('figure2');
+rightProduct.addEventListener('click', function(){
   addPoint(rightChoice);
-  console.log(rightChoice.name + ' points: ' + rightChoice.timesChosen);
-  for (var i = 0; i < 3; i++) {
-    // var score = document.getElementsByClassName('figure0')
-    var random = Math.floor(Math.random() * productNames.length);
-    while (alreadyUsed.indexOf(productNames[random]) > -1) {
-      random = Math.floor(Math.random() * productNames.length);
-      console.log('already used');
-    };
-    // var figure = document.getElementById('figure0');
-    var img = document.getElementById('img' + i);
-    img.setAttribute('src', 'img/' + productNames[random] + '.jpg');
-    var figcaption = document.getElementById('caption' + i);
-    figcaption.textContent = allProducts[random].friendlyName;
-    alreadyUsed.push(productNames[random]);
-    console.log(alreadyUsed);
-  }
-  rightChoice = allProducts[random];
+  resetChoices();
+
+  rightChoice = allProducts[randomProduct];
   alreadyUsed.splice(0, 3);
-  console.log(alreadyUsed);
+
   var counter = document.getElementById('counter');
   questionNumber += 1;
   counter.textContent = 'Question ' + questionNumber + ' of 25';
   if (questionNumber > 25) {
-    displayResults();
+    displayChart();
   }
-  console.log(questionNumber);
 });
 
 
-// Replace everything on the screen with the results page
+////////////////////////////////////////////////////////////////
+// All global functions defined below:
+////////////////////////////////////////////////////////////////
 
-function displayResults () {
-  parent = document.getElementById('mainPage');
+
+
+function displayChart () {
+  parent = document.getElementById('container');
   var child = document.getElementById('surveyProducts');
   parent.removeChild(child);
   child = document.createElement('main');
-  child.setAttribute('id', 'surveyResults');
+  child.setAttribute('id', 'surveyChart');
   parent.appendChild(child);
   var message = document.getElementById('counter');
   message.textContent = 'The result of your survey are as shown below:';
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute('id', 'myChart');
+  canvas.setAttribute('width', '400');
+  canvas.setAttribute('height', '400');
+  child.appendChild(canvas);
 
+  generateColors();
+  retrieveChartData();
+
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Total Product Votes',
+        data: chartData,
+        backgroundColor: chartColors,
+        borderColor: chartColors,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero:true
+          }
+        }]
+      }
+    }
+  });
+}
+
+function retrieveChartData () {
   for (var i = 0; i < productNames.length; i++) {
-    allProducts[i].calculatePercent();
-    allProducts[i].createMessage1();
-    allProducts[i].createMessage2();
-
-    var result = document.createElement('div');
-    child.appendChild(result);
-
-    var image = document.createElement('img');
-    image.setAttribute('src', allProducts[i].source);
-    result.appendChild(image);
-
-
-    var data1 = document.createElement('p');
-    data1.textContent = allProducts[i].timesChosenMessage;
-    result.appendChild(data1);
-
-    var data2 = document.createElement('p');
-    data2.textContent = allProducts[i].percentClickedMessage;
-    result.appendChild(data2);
+    chartData.push(allProducts[i].timesChosen);
   }
+}
+
+function generateColors () {
+  for (var i = 0; i < productNames.length; i++) {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    chartColors.push('rgb(' + r + ', ' + g + ' ,' + b + ')');
+  }
+}
+
+function resetChoices () {
+  for (var i = 0; i < 3; i++) {
+    // var score = document.getElementsByClassName('figure0')
+    randomProduct = Math.floor(Math.random() * productNames.length);
+    while (alreadyUsed.indexOf(productNames[randomProduct]) > -1) {
+      randomProduct = Math.floor(Math.random() * productNames.length);
+    };
+    // var figure = document.getElementById('figure0');
+    var img = document.getElementById('img' + i);
+    img.setAttribute('src', 'img/' + productNames[randomProduct] + '.jpg');
+    var figcaption = document.getElementById('caption' + i);
+    figcaption.textContent = allProducts[randomProduct].friendlyName;
+    alreadyUsed.push(productNames[randomProduct]);
+  }
+}
+
+function addPoint (selection) {
+  selection.timesChosen += 1;
 }

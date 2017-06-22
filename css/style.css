@@ -1,13 +1,47 @@
 body {
+  /*display: block;*/
+  /*width: 70%;
+  margin: auto;*/
+  background-image: url("../img/traffic.jpg");
+  /*background-color: #4d8e72;*/
+}
+
+#container {
   display: block;
   width: 70%;
+  height: 900px;
   margin: auto;
+}
+
+#surveyChart {
+  display: block;
+  width: 100%;
+  margin: 30px auto;
+  background-color: #ffffff;
+  border: 2px black solid;
+  border-radius: 15px;
+  padding: 30px;
+}
+
+#surveyProducts {
+  background-color: #ffffff;
 }
 
 h1, h2, h3 {
   display: block;
   text-align: center;
   width: 100%;
+  font-family: 'Lobster', cursive;
+  margin: 3px;
+}
+
+header {
+  /*width: 98%;*/
+  margin: auto;
+  border: 2px black solid;
+  font-size: 1.5em;
+  border-radius: 15px;
+  background-color: #ffffff;
 }
 
 #welcome {
@@ -31,6 +65,7 @@ main {
   display: block;
   width: 100%;
   margin: auto;
+  background-color: #ffffff;
 }
 
 figure {
@@ -38,26 +73,25 @@ figure {
   display: block;
   float: left;
   width: 33.3%;
-  margin: auto;
-
+  margin: 30px auto;
 }
 
 img {
-  width: 100%;
+  width: 94%;
+  display: block;
   margin: auto;
+  border: 2px black solid;
+  border-radius: 15px;
 }
 
 figcaption {
+  width: 94%;
+  display: block;
+  margin: 30px auto;
   text-align: center;
-}
-
-main#surveyResults {
-  display: block;
-  width: 30%;
-  margin: auto;
-}
-
-main#surveyResults > div {
-  display: block;
-  width: 100%;
+  font-family: 'Lobster', cursive;
+  font-size: 1.5em;
+  background-color: #ffffff;
+  border: 2px black solid;
+  border-radius: 15px;
 }
