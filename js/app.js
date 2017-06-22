@@ -2,9 +2,9 @@
 
 // Declare global variables:
 
-var allProducts = [];
+var allProducts = loadClicks();
 var productNames = [];
-var questionNumber = 1;
+var questionNumber = getQuestionNumber();
 var alreadyUsed = [];
 var chartData = [];
 var chartColors = [];
@@ -38,26 +38,28 @@ function Product (name, friendlyName) {
 
 // Create all of the products using the constructor
 
-var bag = new Product('bag', 'R2D2 Bag');
-var banana = new Product('banana', 'Banana Slicer');
-var bathroom = new Product('bathroom', 'Bathroom Tablet Holder');
-var boots = new Product('boots', 'Boot Shoe Covers');
-var breakfast = new Product('breakfast', 'Complete Breakfast Maker');
-var bubblegum = new Product('bubblegum', 'Meatball Bubble Gum');
-var chair = new Product('chair', 'Super-Uncomfortable Chair');
-var cthulhu = new Product('cthulhu', 'Cthulhu Action Figure');
-var dog_duck = new Product('dog_duck', 'The Old Duck-Dog');
-var dragon = new Product('dragon', 'Can of Dragon Meat');
-var pen = new Product('pen', 'Utencil Caps');
-var pet_sweep = new Product('pet_sweep', 'Pet Sweeping Boots');
-var scissors = new Product('scissors', 'Pizza Scissors');
-var shark = new Product('shark', 'Shark Sleeping Bag');
-var sweep = new Product('sweep', 'Baby Sweeping Outfit');
-var tauntaun = new Product('tauntaun', 'Dead Tauntaun Sleeping Bag');
-var unicorn = new Product('unicorn', 'Can of Unicorn Meat');
-var usb = new Product('usb', 'USB Tentacle Arm');
-var water_can = new Product('water_can', 'Functional Water Can');
-var wine_glass = new Product('wine_glass', 'Best Wine Glass');
+function createAllProducts () {
+  var bag = new Product('bag', 'R2D2 Bag');
+  var banana = new Product('banana', 'Banana Slicer');
+  var bathroom = new Product('bathroom', 'Bathroom Tablet Holder');
+  var boots = new Product('boots', 'Boot Shoe Covers');
+  var breakfast = new Product('breakfast', 'Complete Breakfast Maker');
+  var bubblegum = new Product('bubblegum', 'Meatball Bubble Gum');
+  var chair = new Product('chair', 'Super-Uncomfortable Chair');
+  var cthulhu = new Product('cthulhu', 'Cthulhu Action Figure');
+  var dog_duck = new Product('dog_duck', 'The Old Duck-Dog');
+  var dragon = new Product('dragon', 'Can of Dragon Meat');
+  var pen = new Product('pen', 'Utencil Caps');
+  var pet_sweep = new Product('pet_sweep', 'Pet Sweeping Boots');
+  var scissors = new Product('scissors', 'Pizza Scissors');
+  var shark = new Product('shark', 'Shark Sleeping Bag');
+  var sweep = new Product('sweep', 'Baby Sweeping Outfit');
+  var tauntaun = new Product('tauntaun', 'Dead Tauntaun Sleeping Bag');
+  var unicorn = new Product('unicorn', 'Can of Unicorn Meat');
+  var usb = new Product('usb', 'USB Tentacle Arm');
+  var water_can = new Product('water_can', 'Functional Water Can');
+  var wine_glass = new Product('wine_glass', 'Best Wine Glass');
+}
 
 
 // Render the first three product choices
@@ -97,63 +99,76 @@ function renderInitialChoices () {
   }
 }
 
-renderInitialChoices();
+
+if (questionNumber > 25) {
+  displayChart();
+} else {
+  renderInitialChoices();
+  startEventListeners();
+}
 
 // Set up the three different event listeners for each image/text group
 
 // Left Product:
+function startEventListeners () {
+  var leftProduct = document.getElementById('figure0');
+  leftProduct.addEventListener('click', function(){
+    // addClick(leftChoice);
+    incrementClicks(leftChoice);
+    resetChoices();
 
-var leftProduct = document.getElementById('figure0');
-leftProduct.addEventListener('click', function(){
-  addPoint(leftChoice);
-  resetChoices();
+    leftChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  leftChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
 
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+  // Middle Product:
 
-// Middle Product:
+  var middleProduct = document.getElementById('figure1');
+  middleProduct.addEventListener('click', function(){
+    // addClick(middleChoice);
+    incrementClicks(middleChoice);
+    resetChoices();
 
-var middleProduct = document.getElementById('figure1');
-middleProduct.addEventListener('click', function(){
-  addPoint(middleChoice);
-  resetChoices();
+    middleChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  middleChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
 
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+  // Right product:
 
-// Right product:
+  var rightProduct = document.getElementById('figure2');
+  rightProduct.addEventListener('click', function(){
+    // addClick(rightChoice);
+    incrementClicks(rightChoice);
+    resetChoices();
 
-var rightProduct = document.getElementById('figure2');
-rightProduct.addEventListener('click', function(){
-  addPoint(rightChoice);
-  resetChoices();
+    rightChoice = allProducts[randomProduct];
+    alreadyUsed.splice(0, 3);
 
-  rightChoice = allProducts[randomProduct];
-  alreadyUsed.splice(0, 3);
-
-  var counter = document.getElementById('counter');
-  questionNumber += 1;
-  counter.textContent = 'Question ' + questionNumber + ' of 25';
-  if (questionNumber > 25) {
-    displayChart();
-  }
-});
+    var counter = document.getElementById('counter');
+    questionNumber += 1;
+    incrementQuestionNumber();
+    counter.textContent = 'Question ' + questionNumber + ' of 25';
+    if (questionNumber > 25) {
+      displayChart();
+    }
+  });
+}
 
 
 ////////////////////////////////////////////////////////////////
@@ -203,6 +218,18 @@ function displayChart () {
       }
     }
   });
+  var restart = document.createElement('a');
+  restart.setAttribute('href', 'index.html');
+  child.appendChild(restart);
+  var button = document.createElement('button');
+  button.setAttribute('id', 'resetButton');
+  button.setAttribute('type', 'button');
+  // button.setAttribute('name', 'resetButton');
+  button.textContent = 'Restart Survey';
+  restart.appendChild(button);
+
+  var redoEverything = document.getElementById('resetButton');
+  redoEverything.addEventListener('click', deleteQuestionNumber);
 }
 
 function retrieveChartData () {
@@ -236,6 +263,77 @@ function resetChoices () {
   }
 }
 
-function addPoint (selection) {
-  selection.timesChosen += 1;
+function addClick (product) {
+  // var clicks = getClicks(product);
+  product.timesChosen += 1;
+}
+
+
+function storeClicks () {
+  // var clicks = clickCount.toString();
+  // var product = product.toString();
+  // localStorage.setItem(product, clicks);
+
+  var stringedProducts = JSON.stringify(allProducts);
+  localStorage.setItem('allProducts', stringedProducts);
+}
+
+function incrementClicks (product) {
+  var clicks = getClicks(product);
+  clicks++;
+  storeClicks();
+}
+
+function loadClicks () {
+  // var clicks = localStorage.getItem(product);
+  // if (clicks !== null) {
+  //   clicks = parseInt(clicks);
+  // }
+  // return clicks;
+  var stringedProducts = localStorage.getItem('allProducts');
+  if (stringedProducts !== null) {
+    var unstringedProducts = JSON.parse(stringedProducts);
+    return unstringedProducts;
+  } else {
+    var createProducts = createAllProducts();
+    return createProducts;
+  }
+}
+
+function getClicks (productName) {
+  var stringedProducts = localStorage.getItem('allProducts');
+  allProducts = JSON.parse(stringedProducts);
+  var clicks = productName.timesChosen;
+  return clicks;
+}
+
+function deleteClicks (product) {
+  localStorage.removeItem(product);
+  return null;
+}
+
+function incrementQuestionNumber () {
+  var count = getQuestionNumber();
+  count++;
+  storeQuestionNumber(count);
+}
+
+function storeQuestionNumber (number) {
+  var count = number.toString();
+  localStorage.setItem('questionNumber', count);
+}
+
+function getQuestionNumber () {
+  var count = localStorage.getItem('questionNumber');
+  if (count !== null) {
+    count = parseInt(count);
+  } else {
+    count = 1;
+  }
+  return count;
+}
+
+function deleteQuestionNumber () {
+  localStorage.removeItem('questionNumber');
+  return null;
 }
