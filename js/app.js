@@ -2,7 +2,7 @@
 
 // Declare global variables:
 
-var allProducts = loadClicks();
+var allProducts = [];
 var productNames = [];
 var questionNumber = getQuestionNumber();
 var alreadyUsed = [];
@@ -13,27 +13,22 @@ var leftChoice;
 var middleChoice;
 var rightChoice;
 
+// Get the object data from local storage
+// If no data present, create new objects to store
+
+loadClicks();
+createAllProducts();
+
+
 // Object constructor for all products
 
 function Product (name, friendlyName) {
   this.name = name;
   this.friendlyName = friendlyName;
-  this.source = 'img/' + this.name + '.jpg';
   this.timesChosen = 0;
-  this.percentClicked = 0;
-  this.timesChosenMessage = '';
-  this.percentClickedMessage = '';
+  this.source = 'img/' + this.name + '.jpg';
   allProducts.push(this);
   productNames.push(this.name);
-  this.calculatePercent = function() {
-    this.percentClicked = (this.timesChosen / 25) * 100;
-  };
-  this.createMessage1 = function () {
-    this.timesChosenMessage = 'Chosen: ' + this.timesChosen + ' times';
-  };
-  this.createMessage2 = function () {
-    this.percentClickedMessage = 'Percent of total: ' + this.percentClicked + '%';
-  };
 }
 
 // Create all of the products using the constructor
@@ -60,7 +55,6 @@ function createAllProducts () {
   var water_can = new Product('water_can', 'Functional Water Can');
   var wine_glass = new Product('wine_glass', 'Best Wine Glass');
 }
-
 
 // Render the first three product choices
 
@@ -99,6 +93,7 @@ function renderInitialChoices () {
   }
 }
 
+// Check local storage for question number
 
 if (questionNumber > 25) {
   displayChart();
@@ -115,6 +110,7 @@ function startEventListeners () {
   leftProduct.addEventListener('click', function(){
     // addClick(leftChoice);
     incrementClicks(leftChoice);
+    storeClicks();
     resetChoices();
 
     leftChoice = allProducts[randomProduct];
@@ -135,6 +131,7 @@ function startEventListeners () {
   middleProduct.addEventListener('click', function(){
     // addClick(middleChoice);
     incrementClicks(middleChoice);
+    storeClicks();
     resetChoices();
 
     middleChoice = allProducts[randomProduct];
@@ -155,6 +152,7 @@ function startEventListeners () {
   rightProduct.addEventListener('click', function(){
     // addClick(rightChoice);
     incrementClicks(rightChoice);
+    storeClicks();
     resetChoices();
 
     rightChoice = allProducts[randomProduct];
@@ -263,53 +261,20 @@ function resetChoices () {
   }
 }
 
-function addClick (product) {
-  // var clicks = getClicks(product);
-  product.timesChosen += 1;
-}
-
-
 function storeClicks () {
-  // var clicks = clickCount.toString();
-  // var product = product.toString();
-  // localStorage.setItem(product, clicks);
-
   var stringedProducts = JSON.stringify(allProducts);
   localStorage.setItem('allProducts', stringedProducts);
 }
 
 function incrementClicks (product) {
-  var clicks = getClicks(product);
-  clicks++;
-  storeClicks();
+  product.timesChosen++;
 }
 
 function loadClicks () {
-  // var clicks = localStorage.getItem(product);
+  var clicks = localStorage.getItem('allProducts');
   // if (clicks !== null) {
-  //   clicks = parseInt(clicks);
+  allProducts = JSON.parse(clicks);
   // }
-  // return clicks;
-  var stringedProducts = localStorage.getItem('allProducts');
-  if (stringedProducts !== null) {
-    var unstringedProducts = JSON.parse(stringedProducts);
-    return unstringedProducts;
-  } else {
-    var createProducts = createAllProducts();
-    return createProducts;
-  }
-}
-
-function getClicks (productName) {
-  var stringedProducts = localStorage.getItem('allProducts');
-  allProducts = JSON.parse(stringedProducts);
-  var clicks = productName.timesChosen;
-  return clicks;
-}
-
-function deleteClicks (product) {
-  localStorage.removeItem(product);
-  return null;
 }
 
 function incrementQuestionNumber () {
