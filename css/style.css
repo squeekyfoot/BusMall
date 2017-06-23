@@ -35,6 +35,24 @@ h1, h2, h3 {
   margin: 3px;
 }
 
+#flash1 {
+  animation-name: flash1;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+#flash2 {
+  animation-name: flash2;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+#flash3 {
+  animation-name: flash3;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
 header {
   /*width: 98%;*/
   margin: auto;
@@ -72,6 +90,11 @@ button {
   margin: 50px auto;
   border-radius: 15px;
   font-size: 1.5em;
+  transition: 1.5s;
+}
+
+button:hover {
+  transform: scale(1.5, 1.5);
 }
 
 main {
@@ -87,6 +110,11 @@ figure {
   float: left;
   width: 33.3%;
   margin: 30px auto;
+  transition: 1.5s;
+}
+
+figure:hover {
+  transform: scale(1.5, 1.5);
 }
 
 img {
@@ -107,4 +135,58 @@ figcaption {
   background-color: #ffffff;
   border: 2px black solid;
   border-radius: 15px;
+}
+
+@keyframes flash1 {
+  0% {
+    color: #000000;
+  }
+  25% {
+    color: #f4e842;
+  }
+  50% {
+    color: #000000;
+  }
+  75% {
+    color: #000000;
+  }
+  100% {
+    color: #000000;
+  }
+}
+
+@keyframes flash2 {
+  0% {
+    color: #000000;
+  }
+  25% {
+    color: #000000;
+  }
+  50% {
+    color: #f4e842;
+  }
+  75% {
+    color: #000000;
+  }
+  100% {
+    color: #000000;
+  }
+}
+
+@keyframes flash3 {
+  0% {
+    color: #000000;
+  }
+  25% {
+    color: #000000;
+  }
+  50% {
+    color: #000000;
+  }
+  75% {
+    color: #f4e842;
+  }
+  100% {
+    color: #000000;
+  }
 }
